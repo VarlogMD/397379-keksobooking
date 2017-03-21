@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Mikhail Dergauz](https://up.htmlacademy.ru/javascript/9/user/397379).
-* Наставник: `Неизвестно`.
+* Наставник: `Дмитрий Ермаков`.
 
 ---
 
