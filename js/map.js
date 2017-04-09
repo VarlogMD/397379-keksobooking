@@ -6,67 +6,105 @@ function randomInteger(min, max) {
   return rand;
 }
 
-var i = 0; //declaration index
-var k = randomInteger(0, 2); //objectType index
-var j = randomInteger(0, 2);// checkinTime/checkoutTime index
-
-
-var declaration = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец',
-  'Маленький ужасный дворец', 'Красивый гостевой домик',
-  'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде']
-
-var objectType = ['flat', 'house', 'bungalo'];
-
-var checkinTime = ['12:00', '13:00', '14:00'];
-
-var checkoutTime = ['12:00', '13:00', '14:00'];
-
-var featuresOption = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-
-var newArr = featuresOption.slice();
-newArr.length = randomInteger(1, 6);
-
-
-var advertisement = {
-  author: {
-    'avatar': 'img/avatars/user0' + ++i + '.png'
-  },
-  offer: {
-    'title': declaration[i],
-    'address': {'x': 200, 'y': 300},
-    'price': randomInteger(5000, 1000000),
-    'type': objectType[k],
-    'rooms': randomInteger(1, 5),
-    'guests': randomInteger(1, 10),
-    'checkin': checkinTime[j],
-    'checkout': checkoutTime[j],
-    'features': newArr,
-    'description': '',
-    'photos': []
-  },
-
-  location: {
-    'x': randomInteger(300, 900),
-    'y': randomInteger(100, 500)
-  }
-};
-
-function cloneObject(obj) {
-  var newObj = {};
-  for (var i = 1; i < 8; i++) {
-    newObj = obj[i];
-  }
+function createShortArray () {
+  var featuresOption = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+  var newArrName = featuresOption.slice();
+  newArrName.length = randomInteger(1, 6);
+  return newArrName;
 }
 
+function getRandomTime () {
+  var Time = ['12:00', '13:00', '14:00'];
+  return Time[randomInteger(0, 2)]
+}
 
+function getRandomType () {
+  var objectType = ['flat', 'house', 'bungalo'];
+  return objectType[randomInteger(0, 2)]
+}
 
-console.log(advertisement);
+function createObj (advNumber) {
+  var declaration = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец',
+    'Маленький ужасный дворец', 'Красивый гостевой домик',
+    'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
+  var advertisement = {
+    author: {
+      'avatar': 'img/avatars/user0' + (advNumber + 1) + '.png'
+    },
+    offer: {
+      'title': declaration[randomInteger(0, 7)],
+      'address': {'x': randomInteger(300, 900), 'y': randomInteger(100, 500)},
+      'price': randomInteger(1000, 1000000),
+      'type': getRandomType(),
+      'rooms': randomInteger(1, 5),
+      'guests': randomInteger(1, 10),
+      'checkin': getRandomTime (),
+      'checkout': getRandomTime (),
+      'features': createShortArray(),
+      'description': '',
+      'photos': []
+    },
 
+    location: {
+      'x': randomInteger(300, 900),
+      'y': randomInteger(100, 500)
+    }
+  };
 
+  return advertisement;
+}
 
+function createDiv(adv) {
+  var div = document.createElement('div');
+  div.innerHTML = '<div class="pin" style="left: '+(adv.offer.address.x +20)+'px; top: '+(adv.offer.address.y +40)+'px"><img src='+ adv.author.avatar +' class="rounded" width="40" height="40"></div>';
+  return div
+}
 
+var fragment = document.createDocumentFragment();
 
+var advs = [];
+  for (var i = 0; i< 8; i++) {
+    var adv = createObj(i);
+    advs.push(adv);
+    var div = createDiv(adv);
+    fragment.appendChild(createDiv(adv))
+  }
 
+var pinMap = document.querySelector('.tokyo__pin-map');
+pinMap.appendChild(fragment);
+var dialog = document.querySelector('.dialog'); //ищем окно диалога
+var panel = document.querySelector('.dialog__panel'); // ищем панель диалога
+var lodgeTemplate = document.querySelector('#lodge-template').content; //ищем шаблон
+var newCreatedDialog = lodgeTemplate.cloneNode(true); //клонируем шаблон
 
+// русифицируем названия апартаментов
+var engType = advs[0].offer.type;
+  if (engType === 'flat') {
+    engType = 'Квартира'
+  }
+  if (engType === 'house') {
+    engType = 'Дом'
+  }
+  if (engType === 'bungalo') {
+    engType = 'Бунгало'
+  }
 
+// генерируем спаны
+var generatedSpan = '';
+  for (var j = 0; j < advs[0].offer.features.length; j++ ) {
+    var span = '<span class="feature__image  feature__image--'+(advs[0].offer.features[j])+'"></span>';
+    generatedSpan = generatedSpan + span;
+  }
 
+// набиваем пустой шаблон данными из первого объявления
+newCreatedDialog.querySelector('.lodge__title').textContent = advs[0].offer.title;
+newCreatedDialog.querySelector('.lodge__address').textContent = (advs[0].offer.address.x)+' '+(advs[0].offer.address.y);
+newCreatedDialog.querySelector('.lodge__price').textContent = (advs[0].offer.price)+'&#x20bd;/ночь';
+newCreatedDialog.querySelector('.lodge__type').textContent = engType;
+newCreatedDialog.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' +(advs[0].offer.guests) +' гостей в '+ (advs[0].offer.rooms) +' комнатах';
+newCreatedDialog.querySelector('.lodge__checkin-time').textContent = 'Заезд после '+ (advs[0].offer.checkin)+' выезд до ' + (advs[0].offer.checkout);
+newCreatedDialog.querySelector('.lodge__description').textContent = advs[0].offer.description;
+newCreatedDialog.querySelector('.lodge__features').innerHTML = generatedSpan;
+dialog.querySelector('.dialog__title').innerHTML = '<img src='+ advs[0].author.avatar +'>';
+
+dialog.replaceChild(newCreatedDialog, panel); //заменяем дефолтное диалоговое окно на новое
