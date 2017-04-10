@@ -78,15 +78,18 @@ var lodgeTemplate = document.querySelector('#lodge-template').content; // ище
 var newCreatedDialog = lodgeTemplate.cloneNode(true); // клонируем шаблон
 
 // русифицируем названия апартаментов
-var engType = advs[0].offer.type;
-if (engType === 'flat') {
-  engType = 'Квартира';
-}
-if (engType === 'house') {
-  engType = 'Дом';
-}
-if (engType === 'bungalo') {
-  engType = 'Бунгало';
+function makeTypeRussian(text) {
+  var engText = text;
+  if (engText === 'flat') {
+    engText = 'Квартира';
+  }
+  if (engText === 'house') {
+    engText = 'Дом';
+  }
+  if (engText === 'bungalo') {
+    engText = 'Бунгало';
+  }
+return engText;
 }
 
 // генерируем спаны
@@ -100,7 +103,7 @@ for (var j = 0; j < advs[0].offer.features.length; j++) {
 newCreatedDialog.querySelector('.lodge__title').textContent = advs[0].offer.title;
 newCreatedDialog.querySelector('.lodge__address').textContent = (advs[0].offer.address.x) + ' ' + (advs[0].offer.address.y);
 newCreatedDialog.querySelector('.lodge__price').textContent = (advs[0].offer.price) + '&#x20bd;/ночь';
-newCreatedDialog.querySelector('.lodge__type').textContent = engType;
+newCreatedDialog.querySelector('.lodge__type').textContent = makeTypeRussian(advs[0].offer.type);
 newCreatedDialog.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + (advs[0].offer.guests) + ' гостей в ' + (advs[0].offer.rooms) + ' комнатах';
 newCreatedDialog.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + (advs[0].offer.checkin) + ' выезд до ' + (advs[0].offer.checkout);
 newCreatedDialog.querySelector('.lodge__description').textContent = advs[0].offer.description;
