@@ -89,7 +89,7 @@ function makeTypeRussian(text) {
   if (engText === 'bungalo') {
     engText = 'Бунгало';
   }
-return engText;
+  return engText;
 }
 
 // генерируем спаны
