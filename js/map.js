@@ -119,11 +119,11 @@ var pin = document.getElementsByClassName('pin');
 var selectedPin;
 
 tokyoPinMap.onclick = function(event) {
-  var target = event.target; // где был клик?
+  var target = event.target;
 
   while (target !== tokyoPinMap) {
     if (target.className === 'pin') {
-      // нашли элемент, который нас интересует!
+
       activate(target);
       return;
     }
