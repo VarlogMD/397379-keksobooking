@@ -115,8 +115,6 @@ dialog.replaceChild(newCreatedDialog, panel); // заменяем дефолтн
 
 var tokyoPinMap = document.querySelector('.tokyo__pin-map');
 
-
-
 var selectedPin;
 
 tokyoPinMap.onclick = function (event) {
