@@ -112,16 +112,11 @@ dialog.querySelector('.dialog__title').innerHTML = '<img src=' + advs[0].author.
 
 dialog.replaceChild(newCreatedDialog, panel); // заменяем дефолтное диалоговое окно на новое
 
-
-
-
 var tokyoPinMap = document.querySelector('.tokyo__pin-map');
 
 var pin = document.getElementsByClassName('pin');
 
 var selectedPin;
-
-
 
 tokyoPinMap.onclick = function(event) {
   var target = event.target; // где был клик?
