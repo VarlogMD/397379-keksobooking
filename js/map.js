@@ -108,6 +108,7 @@ newCreatedDialog.querySelector('.lodge__rooms-and-guests').textContent = 'Для
 newCreatedDialog.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + (advs[0].offer.checkin) + ' выезд до ' + (advs[0].offer.checkout);
 newCreatedDialog.querySelector('.lodge__description').textContent = advs[0].offer.description;
 newCreatedDialog.querySelector('.lodge__features').innerHTML = generatedSpan;
+
 dialog.querySelector('.dialog__title').innerHTML = '<img src=' + advs[0].author.avatar + '><a href="#" class="dialog__close"><img src="img/close.svg" alt="close" width="22" height="22"></a>';
 
 dialog.replaceChild(newCreatedDialog, panel); // заменяем дефолтное диалоговое окно на новое
