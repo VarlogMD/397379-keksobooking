@@ -115,11 +115,11 @@ dialog.replaceChild(newCreatedDialog, panel); // заменяем дефолтн
 
 var tokyoPinMap = document.querySelector('.tokyo__pin-map');
 
-var pin = document.getElementsByClassName('pin');
+
 
 var selectedPin;
 
-tokyoPinMap.onclick = function(event) {
+tokyoPinMap.onclick = function (event) {
   var target = event.target;
 
   while (target !== tokyoPinMap) {
@@ -138,4 +138,4 @@ function activate(node) {
   }
   selectedPin = node;
   selectedPin.classList.add('pin--active');
-};
+}
