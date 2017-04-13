@@ -108,6 +108,50 @@ newCreatedDialog.querySelector('.lodge__rooms-and-guests').textContent = 'Для
 newCreatedDialog.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + (advs[0].offer.checkin) + ' выезд до ' + (advs[0].offer.checkout);
 newCreatedDialog.querySelector('.lodge__description').textContent = advs[0].offer.description;
 newCreatedDialog.querySelector('.lodge__features').innerHTML = generatedSpan;
-dialog.querySelector('.dialog__title').innerHTML = '<img src=' + advs[0].author.avatar + '>';
+dialog.querySelector('.dialog__title').innerHTML = '<img src=' + advs[0].author.avatar + '>' + '<a href="#" class="dialog__close"><img src="img/close.svg" alt="close" width="22" height="22"></a>';
 
 dialog.replaceChild(newCreatedDialog, panel); // заменяем дефолтное диалоговое окно на новое
+
+
+var selectedPin;
+
+var tokyoPinMap = document.querySelector('.tokyo__pin-map');
+
+
+tokyoPinMap.addEventListener('click', function() {
+  //generateAdvContent();
+  console.log(advs[k]);
+  var target = event.target; // где был клик?
+  while (target !== tokyoPinMap) {
+    if (target.className === 'pin') {
+      // нашли элемент, который нас интересует!
+      activate(target);
+      return;
+    }
+    target = target.parentNode;
+  }
+});
+
+
+function activate(node) {
+  if (selectedPin) {
+    selectedPin.classList.remove('pin--active');
+  }
+  selectedPin = node;
+  selectedPin.classList.add('pin--active');
+
+}
+
+console.log(advs[3]);
+function generateAdvContent() {
+  newCreatedDialog.querySelector('.lodge__title').textContent = advs[number].offer.title;
+  newCreatedDialog.querySelector('.lodge__address').textContent = (advs[number].offer.address.x) + ' ' + (advs[number].offer.address.y);
+  newCreatedDialog.querySelector('.lodge__price').textContent = (advs[number].offer.price) + '&#x20bd;/ночь';
+  newCreatedDialog.querySelector('.lodge__type').textContent = makeTypeRussian(advs[number].offer.type);
+  newCreatedDialog.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + (advs[number].offer.guests) + ' гостей в ' + (advs[number].offer.rooms) + ' комнатах';
+  newCreatedDialog.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + (advs[number].offer.checkin) + ' выезд до ' + (advs[number].offer.checkout);
+  newCreatedDialog.querySelector('.lodge__description').textContent = advs[number].offer.description;
+  newCreatedDialog.querySelector('.lodge__features').innerHTML = generatedSpan;
+  dialog.querySelector('.dialog__title').innerHTML = '<img src=' + advs[number].author.avatar + '>' + '<a href="#" class="dialog__close"><img src="img/close.svg" alt="close" width="22" height="22"></a>';
+  return;
+}
