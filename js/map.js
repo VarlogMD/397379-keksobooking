@@ -50,8 +50,8 @@ function createObj(advNumber) {
       'y': randomInteger(100, 500)
     }
   };
-
-  return advertisement;
+  var number = advNumber;
+  return number;
 }
 
 function createDiv(adv) {
@@ -63,19 +63,17 @@ function createDiv(adv) {
 var fragment = document.createDocumentFragment();
 
 var advs = [];
+var numbers = [];
 for (var i = 0; i < 8; i++) {
   var adv = createObj(i);
   advs.push(adv);
   var div = createDiv(adv);
   fragment.appendChild(div);
 }
-
+console.log(numbers)
 var pinMap = document.querySelector('.tokyo__pin-map');
 pinMap.appendChild(fragment);
-var dialog = document.querySelector('.dialog'); // ищем окно диалога
-var panel = document.querySelector('.dialog__panel'); // ищем панель диалога
-var lodgeTemplate = document.querySelector('#lodge-template').content; // ищем шаблон
-var newCreatedDialog = lodgeTemplate.cloneNode(true); // клонируем шаблон
+ // клонируем шаблон
 
 // русифицируем названия апартаментов
 function makeTypeRussian(text) {
@@ -91,28 +89,32 @@ function makeTypeRussian(text) {
   }
   return engText;
 }
-
+function getDialog(advNumber) {
+  var dialog = document.querySelector('.dialog'); // ищем окно диалога
+  var panel = document.querySelector('.dialog__panel'); // ищем панель диалога
+  var lodgeTemplate = document.querySelector('#lodge-template').content; // ищем шаблон
+  var newCreatedDialog = lodgeTemplate.cloneNode(true)
 // генерируем спаны
-var generatedSpan = '';
-for (var j = 0; j < advs[0].offer.features.length; j++) {
-  var span = '<span class="feature__image  feature__image--' + (advs[0].offer.features[j]) + '"></span>';
-  generatedSpan = generatedSpan + span;
-}
+  var generatedSpan = '';
+  for (var j = 0; j < advs[advNumber].offer.features.length; j++) {
+    var span = '<span class="feature__image  feature__image--' + (advs[advNumber].offer.features[j]) + '"></span>';
+    generatedSpan = generatedSpan + span;
+  }
 
 // набиваем пустой шаблон данными из первого объявления
-newCreatedDialog.querySelector('.lodge__title').textContent = advs[0].offer.title;
-newCreatedDialog.querySelector('.lodge__address').textContent = (advs[0].offer.address.x) + ' ' + (advs[0].offer.address.y);
-newCreatedDialog.querySelector('.lodge__price').textContent = (advs[0].offer.price) + '&#x20bd;/ночь';
-newCreatedDialog.querySelector('.lodge__type').textContent = makeTypeRussian(advs[0].offer.type);
-newCreatedDialog.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + (advs[0].offer.guests) + ' гостей в ' + (advs[0].offer.rooms) + ' комнатах';
-newCreatedDialog.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + (advs[0].offer.checkin) + ' выезд до ' + (advs[0].offer.checkout);
-newCreatedDialog.querySelector('.lodge__description').textContent = advs[0].offer.description;
-newCreatedDialog.querySelector('.lodge__features').innerHTML = generatedSpan;
+  newCreatedDialog.querySelector('.lodge__title').textContent = advs[advNumber].offer.title;
+  newCreatedDialog.querySelector('.lodge__address').textContent = (advs[advNumber].offer.address.x) + ' ' + (advs[advNumber].offer.address.y);
+  newCreatedDialog.querySelector('.lodge__price').textContent = (advs[advNumber].offer.price) + '&#x20bd;/ночь';
+  newCreatedDialog.querySelector('.lodge__type').textContent = makeTypeRussian(advs[advNumber].offer.type);
+  newCreatedDialog.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + (advs[advNumber].offer.guests) + ' гостей в ' + (advs[advNumber].offer.rooms) + ' комнатах';
+  newCreatedDialog.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + (advs[advNumber].offer.checkin) + ' выезд до ' + (advs[advNumber].offer.checkout);
+  newCreatedDialog.querySelector('.lodge__description').textContent = advs[advNumber].offer.description;
+  newCreatedDialog.querySelector('.lodge__features').innerHTML = generatedSpan;
 
-dialog.querySelector('.dialog__title').innerHTML = '<img src=' + advs[0].author.avatar + '><a href="#" class="dialog__close"><img src="img/close.svg" alt="close" width="22" height="22"></a>';
-
-dialog.replaceChild(newCreatedDialog, panel); // заменяем дефолтное диалоговое окно на новое
-
+  dialog.querySelector('.dialog__title').innerHTML = '<img src=' + advs[advNumber].author.avatar + '><a href="#" class="dialog__close"><img src="img/close.svg" alt="close" width="22" height="22"></a>';
+return newCreatedDialog
+  //dialog.replaceChild(newCreatedDialog, panel); // заменяем дефолтное диалоговое окно на новое
+}
 var tokyoPinMap = document.querySelector('.tokyo__pin-map');
 
 var selectedPin;
@@ -122,7 +124,7 @@ tokyoPinMap.onclick = function (event) {
 
   while (target !== tokyoPinMap) {
     if (target.className === 'pin') {
-
+      getDialog(number);
       activate(target);
       return;
     }
